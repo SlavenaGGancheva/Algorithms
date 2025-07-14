@@ -1,0 +1,211 @@
+
+/*
+Challenge 1
+Recursion (breaking down a problem into sub-problems)
+
+Modify the function so that it returns the product of all the elements in the array
+////////////////////////////
+//     Challenge 1
+////////////////////////////
+
+function product(arr, i = 0) {
+  if (i === arr.length - 1) return arr[i];
+  return // insert recursive case here!
+}
+
+// To check if you've completed the challenge, uncomment these console.logs!
+// console.log(product([1, 2, 3, 4])); // -> 24
+// console.log(product([1, 2, 3, 4, 5])); // -> 120
+// console.log(product([4, 5, 6])); // -> 120
+
+*/
+
+/*
+Challenge 2 - Solved
+Caching - keeping track of values you've already come across
+*/
+////////////////////////////
+//     Challenge 2
+////////////////////////////
+
+function containsDuplicates(arr) {
+  const cache = {}
+  for (let i = 0; i < arr.length; i++) {
+    if (cache[arr[i]]) {
+      cache[arr[i]] += 1;
+    } else {
+      cache[arr[i]] = 1
+    }
+    for (let key in cache) {
+      if (cache[key] > 1) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+//To check if you've completed the challenge, uncomment these console.logs!
+console.log(containsDuplicates([1, 2, 3, 4, 5, 6])); // -> false
+console.log(containsDuplicates([1, 2, 3, 4, 5, 6, 3])); // -> true
+console.log(containsDuplicates([])); // -> false
+
+
+/*
+///////////////////////////////////////////////////////////////////
+Challenge 3
+///////////////////////////////////////////////////////////////////
+Memoization - keeping track of values you've already computed
+*/
+function createFib() {
+  const memo = {}
+
+  function fib(n) {
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    // add another base case;
+    if (memo[n]) return memo[n];
+
+    let fibn = fib(n-1) + fib(n-2);
+    // what should we do with fibn
+    memo[n] = fibn;
+
+    return fibn
+  }
+  return fib
+}
+
+const memoFib = createFib();
+
+// To check if you've completed the challenge, uncomment these console.logs!
+// console.log(memoFib(0)); // -> 0
+// console.log(memoFib(5)); // -> 5
+// console.log(memoFib(37)); // -> 24157817
+
+//console.log(memoFib(45)); // only uncomment if you're sure that memoization is working!
+
+
+
+/*
+///////////////////////////////////////////////////////////////////
+Challenge 4
+//////////////////////////////////////////////////////////////////
+Don't compute too many things! What can we do to this array to make this problem easier?
+
+Find the smallest difference between any two numbers in an array
+*/
+
+function smallestDiff(arr) {
+  let cache = {};
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i+1; j < arr.length; j++) {
+    let difference = Math.abs(arr[i] - arr[j]);
+      if (!cache[difference]) {
+        cache[difference] = difference;
+      }
+    }
+  }
+  let diff = Object.values(cache);
+  //console.log(diff);
+  let result = Math.min(...diff);
+  return result;
+}
+
+//  Another SOLUTION  
+// function smallestDiff(arr) {
+//   let outerDiff = Infinity
+//   for(let i = 0; i < arr.length; i++) {
+//     let innerDiff = Infinity - 1;
+//     for(let j = i + 1; j < arr.length; j++) {
+//       if ((Math.abs(arr[i] - arr[j])) < innerDiff) {
+//         innerDiff = Math.abs(arr[i] - arr[j]);
+//       }
+//     }
+//     if(innerDiff < outerDiff) {
+//       outerDiff = innerDiff;
+//     }
+//   }
+//   return outerDiff;
+// }
+
+
+
+// To check if you've completed the challenge, uncomment these console.logs!
+// console.log(smallestDiff([4, 1, 3])); // -> 1
+// console.log(smallestDiff([10, 20, 30, 40, 50, 60])); // -> 10
+// console.log(smallestDiff([1, 2, 3, 4, 5, 6, 7])); // -> 1
+
+
+/*
+*****************************************************************
+Challenge 5
+Use data structures - Stack!
+
+check to see if a string contains balanced parentheses
+
+This means that every open parenthesis must be matched with one closed one
+
+Ex: '()' is balanced
+
+Ex: ')(' is NOT balanced , closed parenthesis must come after its match
+
+Ex: '(()(()))' is balanced
+
+Ex: '((()' is NOT balanced
+*/
+////////////////////////////
+//     Challenge 5
+////////////////////////////
+
+function balancedParens(str) {
+  const stack = [];
+  const parensArray = str.split('');
+  //console.log(parensArray, 'parensArray');
+  for (let i = 0; i < parensArray.length; i ++) {
+    // what should this for loop do?
+    // on the first iteration when the stack length is 0 and the first el in the parensArray is ')' just return false, because closing paren should always come after an opening panen
+    if (stack.length === 0 && parensArray[i] === ')') {
+      return false;
+    }
+    //console.log(parensArray[i], '-> parensArray[i]')
+    // if curr el is an opening paren push it on the stack
+    if (parensArray[i] === '(') {
+      stack.push(parensArray[i])
+    //console.log(stack, 'stack')
+    // if curr el is a closing paren pop it off the stack
+    } else {
+      stack.pop()
+    }
+    console.log(stack, 'stack')
+  }
+  // return something
+  // in the end the stack's length will be zero if every opening paren had a closing paren, if not the stack will contain opening parens '('.
+  return stack.length === 0 ? true : false 
+  
+}
+
+// To check if you've completed the challenge, uncomment these console.logs!
+//console.log(balancedParens('()')); // -> true
+//console.log(balancedParens(')(')); // -> false
+//console.log(balancedParens('(()(()))')); // -> true
+//console.log(balancedParens('((()')); // -> false
+
+
+// function balancedParens(str) {
+//   const stack = [];
+//   const parensArray = str.split('');
+//   console.log(parensArray);
+//   for (let i = 0; i < parensArray.length; i ++) {
+//     // what should this for loop do?
+//     if (stack.length === 0 && parensArray[i] === ')') {
+//       return false
+//     }
+//     if (parensArray[i] === '(') {
+//       stack.push(parensArray[i])
+//     } else {
+//       stack.pop()
+//     }
+//   }
+//   // return something
+//   return stack.length === 0 ? true : false 
+// }
